@@ -13,10 +13,10 @@ def application():
     
     # Custom title with center alignment and increased font size
     st.markdown("""
-        <h1 style='text-align: center; font-size: 50px;'>✨RBPD</h1>
+        <h1 style='text-align: center; font-size: 50px;'>✨Sql Agent</h1>
         <h3 style='text-align: center;'>Convert Your files into a BRD</h3>
     """, unsafe_allow_html=True)
-    # st.title("RBPD")
+    # st.title("Sql Agent")
     # st.subheader("Convert Your files into a BRD")
     if "authenticated" not in st.session_state:
         st.session_state.authenticated = False

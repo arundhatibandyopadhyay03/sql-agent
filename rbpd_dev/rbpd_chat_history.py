@@ -72,7 +72,7 @@ def application():
         st.stop()
 
     user_id = st.session_state.username
-    st.title(f"RBPD Chat History - User: {user_id}")
+    st.title(f"rbpd Chat History - User: {user_id}")
     if st.sidebar.button("🚪 Logout"):
         logout()
 

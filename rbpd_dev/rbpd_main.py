@@ -154,7 +154,7 @@
 # def application():
 #     image_url = None
 #     # Sidebar Buttons
-#     st.sidebar.title("RBPD")
+#     st.sidebar.title("rbpd")
 #     if st.sidebar.button("🗂️ Chat History"):
 #         st.session_state.page = "rbpd_chat_history"
 #         st.experimental_rerun()
@@ -162,7 +162,7 @@
 #     if st.sidebar.button("🚪 Logout"):
 #         logout()
 
-#     st.title("✨RBPD")
+#     st.title("✨rbpd")
 #     st.subheader("Your AI-powered companion to convert your documents into a BRD")
 
 #     user_id = st.session_state.get("username")
@@ -550,15 +550,12 @@ def send_query_with_files(client, thread_id, user_query, file_ids):
 
 def application():
     image_url = None
-    st.sidebar.title("RBPD")
-    if st.sidebar.button("🗂️ Chat History"):
-        st.session_state.page = "rbpd_chat_history"
-        st.rerun()
-
+    st.sidebar.title("Sql Agent")
+    
     if st.sidebar.button("🚪 Logout"):
         logout()
 
-    st.title("✨RBPD")
+    st.title("✨Sql Agent")
     st.subheader("Your AI-powered companion to convert your documents into a BRD")
 
     user_id = st.session_state.get("username")

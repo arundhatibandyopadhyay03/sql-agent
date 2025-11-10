@@ -1,4 +1,4 @@
-# RBPD - AI-Powered Document to BRD Converter
+# rbpd - AI-Powered Document to BRD Converter
 
 An intelligent Streamlit application that converts your documents into Business Requirements Documents (BRD) using Azure OpenAI and Azure services.
 

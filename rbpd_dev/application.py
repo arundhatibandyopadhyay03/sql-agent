@@ -1,10 +1,9 @@
 import streamlit as st
 # Set page config here as the first Streamlit command
-st.set_page_config(page_title="rbpd", page_icon="📄")  # or a more generic title if needed
+st.set_page_config(page_title="Sql Agent", page_icon="📄")  # or a more generic title if needed
 
 import login
 import rbpd_main
-import rbpd_chat_history
 
 
 
@@ -15,7 +14,7 @@ if "authenticated" not in st.session_state:
 page = st.session_state.page
 
 # Session safety check: block access to internal pages if not authenticated
-protected_pages = ["rbpd_main", "rbpd_chat_history"]
+protected_pages = ["rbpd_main"]
 if page in protected_pages and not st.session_state.authenticated:
     st.warning("⚠️ Please log in to continue.")
     st.session_state.page = "login"
@@ -24,8 +23,5 @@ if page == "login":
     login.application()  # call login's app function to run the login UI
 elif page == "rbpd_main":
     rbpd_main.application()
-elif page == "rbpd_chat_history":
-    rbpd_chat_history.application()
 else:
-    
     st.write("Page not found")

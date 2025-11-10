@@ -5,8 +5,8 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "rbpd-app"
 version = "1.0.0"
-description = "RBPD - AI-powered document to BRD converter"
-authors = [{name = "RBPD Team"}]
+description = "rbpd - AI-powered document to BRD converter"
+authors = [{name = "rbpd Team"}]
 license = {text = "MIT"}
 readme = "README.md"
 requires-python = ">=3.8"
