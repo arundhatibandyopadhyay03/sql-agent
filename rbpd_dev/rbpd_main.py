@@ -362,23 +362,71 @@ os.environ["HTTPS_PROXY"] = ""
 
 
 # === Constants ===
-AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
-AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_VERSION = os.getenv("AZURE_OPENAI_VERSION")
-ASSISTANT_ID = os.getenv("ASSISTANT_ID")
+# Try Streamlit secrets first, fallback to environment variables for local development
+try:
+    import streamlit as st
+    AZURE_OPENAI_KEY = st.secrets.get("AZURE_OPENAI_KEY", os.getenv("AZURE_OPENAI_KEY"))
+    AZURE_OPENAI_ENDPOINT = st.secrets.get("AZURE_OPENAI_ENDPOINT", os.getenv("AZURE_OPENAI_ENDPOINT"))
+    AZURE_OPENAI_VERSION = st.secrets.get("AZURE_OPENAI_VERSION", os.getenv("AZURE_OPENAI_VERSION"))
+    ASSISTANT_ID = st.secrets.get("ASSISTANT_ID", os.getenv("ASSISTANT_ID"))
 
-BLOB_CONNECTION_STRING = os.getenv("BLOB_CONNECTION_STRING")
-BLOB_CONTAINER_NAME = os.getenv("BLOB_CONTAINER_NAME")
+    BLOB_CONNECTION_STRING = st.secrets.get("BLOB_CONNECTION_STRING", os.getenv("BLOB_CONNECTION_STRING"))
+    BLOB_CONTAINER_NAME = st.secrets.get("BLOB_CONTAINER_NAME", os.getenv("BLOB_CONTAINER_NAME"))
 
-COSMOS_ENDPOINT = os.getenv("COSMOS_ENDPOINT")
-COSMOS_KEY = os.getenv("COSMOS_KEY")
-COSMOS_DB_NAME = os.getenv("COSMOS_DB_NAME")
-COSMOS_CONTAINER_NAME = os.getenv("COSMOS_CONTAINER_NAME")
+    COSMOS_ENDPOINT = st.secrets.get("COSMOS_ENDPOINT", os.getenv("COSMOS_ENDPOINT"))
+    COSMOS_KEY = st.secrets.get("COSMOS_KEY", os.getenv("COSMOS_KEY"))
+    COSMOS_DB_NAME = st.secrets.get("COSMOS_DB_NAME", os.getenv("COSMOS_DB_NAME"))
+    COSMOS_CONTAINER_NAME = st.secrets.get("COSMOS_CONTAINER_NAME", os.getenv("COSMOS_CONTAINER_NAME"))
 
-account_name = os.getenv("ACCOUNT_NAME")
-account_key = os.getenv("ACCOUNT_KEY")
+    account_name = st.secrets.get("ACCOUNT_NAME", os.getenv("ACCOUNT_NAME"))
+    account_key = st.secrets.get("ACCOUNT_KEY", os.getenv("ACCOUNT_KEY"))
+except ImportError:
+    # Fallback for non-Streamlit environments
+    AZURE_OPENAI_KEY = os.getenv("AZURE_OPENAI_KEY")
+    AZURE_OPENAI_ENDPOINT = os.getenv("AZURE_OPENAI_ENDPOINT")
+    AZURE_OPENAI_VERSION = os.getenv("AZURE_OPENAI_VERSION")
+    ASSISTANT_ID = os.getenv("ASSISTANT_ID")
+
+    BLOB_CONNECTION_STRING = os.getenv("BLOB_CONNECTION_STRING")
+    BLOB_CONTAINER_NAME = os.getenv("BLOB_CONTAINER_NAME")
+
+    COSMOS_ENDPOINT = os.getenv("COSMOS_ENDPOINT")
+    COSMOS_KEY = os.getenv("COSMOS_KEY")
+    COSMOS_DB_NAME = os.getenv("COSMOS_DB_NAME")
+    COSMOS_CONTAINER_NAME = os.getenv("COSMOS_CONTAINER_NAME")
+
+    account_name = os.getenv("ACCOUNT_NAME")
+    account_key = os.getenv("ACCOUNT_KEY")
 
 # === Initialize Clients ===
+# Validate required environment variables
+required_vars = {
+    'AZURE_OPENAI_KEY': AZURE_OPENAI_KEY,
+    'AZURE_OPENAI_ENDPOINT': AZURE_OPENAI_ENDPOINT,
+    'AZURE_OPENAI_VERSION': AZURE_OPENAI_VERSION,
+    'ASSISTANT_ID': ASSISTANT_ID,
+    'BLOB_CONNECTION_STRING': BLOB_CONNECTION_STRING,
+    'BLOB_CONTAINER_NAME': BLOB_CONTAINER_NAME,
+    'COSMOS_ENDPOINT': COSMOS_ENDPOINT,
+    'COSMOS_KEY': COSMOS_KEY,
+    'COSMOS_DB_NAME': COSMOS_DB_NAME,
+    'COSMOS_CONTAINER_NAME': COSMOS_CONTAINER_NAME,
+    'ACCOUNT_NAME': account_name,
+    'ACCOUNT_KEY': account_key
+}
+
+missing_vars = [var for var, value in required_vars.items() if not value]
+if missing_vars:
+    raise ValueError(f"Missing required environment variables: {', '.join(missing_vars)}")
+
+# Validate COSMOS_KEY is a valid base64 string
+if COSMOS_KEY:
+    try:
+        import base64
+        base64.b64decode(COSMOS_KEY, validate=True)
+    except Exception as e:
+        raise ValueError(f"COSMOS_KEY is not a valid base64 encoded string: {e}")
+
 client = AzureOpenAI(api_key=AZURE_OPENAI_KEY, api_version=AZURE_OPENAI_VERSION, azure_endpoint=AZURE_OPENAI_ENDPOINT)
 blob_service_client = BlobServiceClient.from_connection_string(BLOB_CONNECTION_STRING)
 container_client = blob_service_client.get_container_client(BLOB_CONTAINER_NAME)
