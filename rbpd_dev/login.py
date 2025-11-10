@@ -17,7 +17,7 @@ def application():
         <h3 style='text-align: center;'>Convert Your files into a BRD</h3>
     """, unsafe_allow_html=True)
     # st.title("Sql Agent")
-    # st.subheader("Convert Your files into a BRD")
+    # st.subheader("Convert Your files into a SQL")
     if "authenticated" not in st.session_state:
         st.session_state.authenticated = False
     if "username" not in st.session_state:
