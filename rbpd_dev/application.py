@@ -6,7 +6,6 @@ import login
 import rbpd_main
 import rbpd_chat_history
 
-#page = st.query_params.get("page", ["login"])[0]
 
 
 if "page" not in st.session_state:
